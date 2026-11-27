@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pacman Packagings — Bookkeeping</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 64 64" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="bagGold" x1="12" y1="10" x2="52" y2="58" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#FFD34D"/>
+                <stop offset="1" stop-color="#F0B400"/>
+              </linearGradient>
+            </defs>
+            <circle cx="32" cy="32" r="30" fill="#1F2937"/>
+            <path d="M18 22C18 19.7909 19.7909 18 22 18H42C44.2091 18 46 19.7909 46 22V48C46 50.2091 44.2091 52 42 52H22C19.7909 52 18 50.2091 18 48V22Z" fill="url(#bagGold)"/>
+            <path d="M25 18V15C25 11.6863 27.6863 9 31 9H33C36.3137 9 39 11.6863 39 15V18" stroke="#FFD34D" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M26 31H35C38.3137 31 41 33.6863 41 37C41 40.3137 38.3137 43 35 43H26V31Z" stroke="#1F2937" stroke-width="3.6" stroke-linejoin="round"/>
+            <path d="M26 31V46" stroke="#1F2937" stroke-width="3.6" stroke-linecap="round"/>
+            <circle cx="44.5" cy="45.5" r="5.5" fill="#1F2937"/>
+            <circle cx="44.5" cy="45.5" r="2.2" fill="#FFD34D"/>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-name">Pacman Packagings</div>
+          <div class="brand-tag">An undertaking of Neena Greentailers</div>
+        </div>
+      </div>
+      <nav class="nav" id="nav">
+        <button class="nav-item active" data-view="dashboard"><span class="nav-icon">▣</span>Dashboard</button>
+        <button class="nav-item" data-view="customers"><span class="nav-icon">◉</span>Customers & Suppliers</button>
+        <button class="nav-item" data-view="inventory"><span class="nav-icon">▤</span>Inventory / Items</button>
+        <button class="nav-item" data-view="invoices"><span class="nav-icon">▦</span>Invoices & Payments</button>
+        <button class="nav-item" data-view="expenses"><span class="nav-icon">▧</span>Expenses & Purchases</button>
+        <button class="nav-item" data-view="production"><span class="nav-icon">⚙</span>Daily Production</button>
+      </nav>
+      <div class="sidebar-foot">
+        <div class="storage-note">Data saved in this browser (local storage).</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h1 id="viewTitle">Dashboard</h1>
+          <p id="viewSubtitle" class="subtitle">Overview of your business today.</p>
+        </div>
+        <div class="topbar-actions">
+          <div class="date-pill" id="todayPill"></div>
+          <button class="btn btn-ghost" id="exportBtn">Export Data</button>
+          <label class="btn btn-ghost file-label">Import Data<input type="file" id="importInput" accept="application/json" hidden></label>
+        </div>
+      </header>
+
+      <section id="view-dashboard" class="view active"></section>
+      <section id="view-customers" class="view"></section>
+      <section id="view-inventory" class="view"></section>
+      <section id="view-invoices" class="view"></section>
+      <section id="view-expenses" class="view"></section>
+      <section id="view-production" class="view"></section>
+    </main>
+  </div>
+
+  <div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h2 id="modalTitle"></h2>
+        <button class="icon-btn" id="modalClose" aria-label="Close">✕</button>
+      </div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
