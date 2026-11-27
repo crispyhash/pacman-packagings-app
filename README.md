@@ -4,6 +4,8 @@
 
 A lightweight bookkeeping web app for a small paper bag manufacturing business.
 
+**Live app (cloud auto-save):** https://pacman-packagings-app.pages.dev
+
 ## Features
 - **Dashboard** — sales, payments received, expenses, net, receivables, today's production, low stock.
 - **Customers & Suppliers** — contact records, balances, history.
@@ -11,34 +13,32 @@ A lightweight bookkeeping web app for a small paper bag manufacturing business.
 - **Invoices & Payments** — create invoices, record payments, track outstanding/overdue.
 - **Expenses & Purchases** — log spent/received entries with category and payment method.
 - **Daily Production** — machine output, target, produced, waste.
+- **Cloud auto-save** — every change is saved to Cloudflare D1 automatically.
 - **Export/Import** — backup or move your data as a JSON file.
 
-## Run locally (right now)
-1. Open the folder `pacman-packagings-app`.
-2. Double-click `index.html` to open it in your browser.
+## Run locally
+Open `index.html` in a browser. Without a backend it falls back to browser local
+storage (shown as “Offline — saved in this browser only”).
 
-> **Note:** Data is saved in your browser's local storage on that device/browser. Export regularly as backup.
+## Deploy on Cloudflare (Pages + D1)
+1. **Create a D1 database** in the Cloudflare dashboard: Workers & Pages → D1 →
+   Create database, name it e.g. `pacman-packagings-db`.
+2. **Run the schema**: open the database → Console → paste the contents of
+   `schema.sql` → Execute.
+3. **Create a Pages project** (Workers & Pages → Create → Pages). Either connect
+   the Git repo or use Direct Upload with the app files (must include
+   `_worker.js` at the root).
+4. **Bind the database**: Pages project → Settings → Functions → D1 database
+   bindings → Variable name `DB` → select your database → Save.
+5. **Redeploy** so the binding takes effect.
 
-## Access from anywhere (free hosting)
-To make it accessible from anywhere on the internet, deploy it as a static site:
+The app then saves to `/api/state` (served by `_worker.js`) on every change and
+loads the cloud copy on startup.
 
-### Option A — Netlify (easiest, free)
-1. Create a free account at [netlify.com](https://www.netlify.com/).
-2. Zip the `pacman-packagings-app` folder (or drag the folder) into Netlify "Add new site" → "Deploy manually".
-3. Netlify gives you a public URL you can open from anywhere.
-
-### Option B — Vercel (free)
-1. Create a free account at [vercel.com](https://vercel.com/).
-2. Install Vercel CLI or use the web dashboard to import/deploy the folder.
-3. Deploy as a static site; you'll get a public URL.
-
-### Option C — GitHub Pages (free)
-1. Create a GitHub account and a new repository.
-2. Upload the files in `pacman-packagings-app`.
-3. Enable GitHub Pages in repository settings.
-
-## Important: cross-device data
-This MVP stores data in **browser local storage**. That means data is per-browser/per-device. For true anywhere-access with shared data across devices, the next step is to connect a cloud database (e.g., Supabase free tier) and add login. If you want, ask me to wire Supabase into this app.
+> Security note: the API has no login. Anyone with the site URL can read/write
+> the data. For a private setup, put Cloudflare Access in front of the site.
 
 ## Branding
-The logo included is an original logo created for Pacman Packagings (inspired by a bold yellow/dark palette, not using official Pac-Man game assets). Replace `logo.svg` / the inline SVG in `index.html` if you have your own official logo.
+The logo is an original design for Pacman Packagings (yellow/dark palette
+inspired, not using official Pac-Man game assets). Replace `logo.svg` or the
+inline SVG in `index.html` if you have your own official logo.

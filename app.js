@@ -50,8 +50,24 @@ function loadState() {
     return structuredClone(DEFAULT_STATE);
   }
 }
+let cloudTimer = null;
 function saveState() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  clearTimeout(cloudTimer);
+  cloudTimer = setTimeout(pushToCloud, 400);
+}
+
+async function pushToCloud() {
+  try {
+    const res = await fetch('/api/state', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(state)
+    });
+    setCloudStatus(res.ok);
+  } catch {
+    setCloudStatus(false);
+  }
 }
 
 let state = loadState();
@@ -533,6 +549,35 @@ document.addEventListener('click', e => {
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
+function setCloudStatus(ok) {
+  const el = $('#cloudStatus');
+  if (!el) return;
+  if (ok) {
+    el.textContent = 'Saved to cloud automatically.';
+    el.className = 'storage-note cloud-ok';
+  } else {
+    el.textContent = 'Offline — saved in this browser only.';
+    el.className = 'storage-note cloud-off';
+  }
+}
+
+async function loadCloudState() {
+  try {
+    const res = await fetch('/api/state', { headers: { 'Accept': 'application/json' } });
+    if (!res.ok) throw new Error('No cloud endpoint');
+    const data = await res.json();
+    if (data && typeof data === 'object' && Array.isArray(data.contacts)) {
+      state = { ...structuredClone(DEFAULT_STATE), ...data };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      render();
+      setView(currentView);
+    }
+    setCloudStatus(true);
+  } catch {
+    setCloudStatus(false);
+  }
+}
+
 function init() {
   $('#todayPill').textContent = new Date().toLocaleDateString('en-IN', { weekday:'short', day:'numeric', month:'short', year:'numeric' });
   $all('.nav-item').forEach(btn => btn.onclick = () => setView(btn.dataset.view));
@@ -540,5 +585,6 @@ function init() {
   $('#importInput').onchange = e => { const f=e.target.files[0]; if(f) importData(f); e.target.value=''; };
   render();
   setView('dashboard');
+  loadCloudState();
 }
 init();

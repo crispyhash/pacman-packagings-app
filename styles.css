@@ -50,6 +50,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .nav-icon { width: 20px; text-align: center; font-size: 0.95rem; opacity: .9; }
 .sidebar-foot { margin-top: auto; padding: 0 8px; }
 .storage-note { font-size: 0.74rem; color: var(--muted); line-height: 1.5; padding: 12px 0; border-top: 1px solid var(--line); }
+.storage-note.cloud-ok { color: var(--accent); }
+.storage-note.cloud-off { color: #b07a12; }
 
 /* Main */
 .main { padding: 36px 40px; min-width: 0; max-width: 1400px; }
