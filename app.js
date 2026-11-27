@@ -150,7 +150,7 @@ function renderDashboard() {
     </div>
     <div class="grid stats">
       ${statCard('Receivables', fmtMoney(receivable), 'Outstanding from customers', receivable > 0 ? 'warn' : 'good')}
-      ${statCard('Today's Production', producedToday.toLocaleString(), `Target: ${targetToday.toLocaleString()} units`)}
+      ${statCard("Today's Production", producedToday.toLocaleString(), `Target: ${targetToday.toLocaleString()} units`)}
       ${statCard('Customers / Suppliers', `${state.contacts.filter(c=>c.type==='Customer').length} / ${state.contacts.filter(c=>c.type==='Supplier').length}`, 'Active contacts')}
       ${statCard('Low Stock Items', String(lowStock.length), lowStock.length ? 'Need reorder' : 'Stock healthy', lowStock.length ? 'warn' : 'good')}
     </div>
