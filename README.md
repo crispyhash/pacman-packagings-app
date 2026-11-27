@@ -30,13 +30,15 @@ storage (shown as “Offline — saved in this browser only”).
    `_worker.js` at the root).
 4. **Bind the database**: Pages project → Settings → Functions → D1 database
    bindings → Variable name `DB` → select your database → Save.
-5. **Redeploy** so the binding takes effect.
+5. **Set login secrets**: Pages project → Settings → Variables and Secrets → Add
+   encrypted secrets: `APP_USERNAME`, `APP_PASSWORD`, `AUTH_SECRET` (random long string).
+6. **Redeploy** so bindings/secrets take effect.
 
-The app then saves to `/api/state` (served by `_worker.js`) on every change and
-loads the cloud copy on startup.
+The app then requires login and saves to `/api/state` (served by `_worker.js`)
+on every change.
 
-> Security note: the API has no login. Anyone with the site URL can read/write
-> the data. For a private setup, put Cloudflare Access in front of the site.
+> Security note: use a strong password and keep `AUTH_SECRET` private. For extra
+> protection, also put Cloudflare Access in front of the site.
 
 ## Branding
 The logo is an original design for Pacman Packagings (yellow/dark palette

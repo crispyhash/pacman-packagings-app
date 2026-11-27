@@ -64,6 +64,7 @@ async function pushToCloud() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(state)
     });
+    if (res.status === 401) { window.location.href = '/login'; return; }
     setCloudStatus(res.ok);
   } catch {
     setCloudStatus(false);
@@ -564,6 +565,7 @@ function setCloudStatus(ok) {
 async function loadCloudState() {
   try {
     const res = await fetch('/api/state', { headers: { 'Accept': 'application/json' } });
+    if (res.status === 401) { window.location.href = '/login'; return; }
     if (!res.ok) throw new Error('No cloud endpoint');
     const data = await res.json();
     if (data && typeof data === 'object' && Array.isArray(data.contacts)) {
